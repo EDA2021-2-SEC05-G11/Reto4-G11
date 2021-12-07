@@ -29,6 +29,47 @@ import csv
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
+def initAnalyzer():
+
+    analyzer = model.newAnalyzer()
+    return analyzer
+
+def loadInfo(analyzer):
+
+    airportfile = cf.data_dir + "airports-utf8-small.csv"
+    input_file = csv.DictReader(open(airportfile, encoding="utf-8"),
+                                delimiter=",")
+    for airport in input_file:
+        model.addairport(analyzer, airport)
+
+    routesfile = cf.data_dir + "routes-utf8-small.csv"
+    routes_file = csv.DictReader(open(routesfile, encoding="utf-8"),
+                                delimiter=",")
+    for routes in routes_file:
+        model.addrutes(analyzer, routes) 
+
+    worldcitiesfile = cf.data_dir + "worldcities-utf8.csv"
+    city_file = csv.DictReader(open(worldcitiesfile, encoding="utf-8"),
+                                delimiter=",")
+    for city in city_file:
+        model.addcities(analyzer, city)
+
+    #model.creargrafonodirigido(analyzer)
+
+    return analyzer
+
+def totalAirperGraph(analyzer):
+    """
+    Total de paradas de autobus
+    """
+    return model.totalAirperGraph(analyzer)
+
+def totalConnectionsperGraph(analyzer):
+    """
+    Total de enlaces entre las paradas
+    """
+    return model.totalConnectionsperGraph(analyzer)
+
 # Inicialización del Catálogo de libros
 
 # Funciones para la carga de datos

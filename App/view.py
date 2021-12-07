@@ -37,7 +37,6 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("A- Cargar información en el catálogo")
-    print("B- ")
     print("1- Encontrar puntos de interconexión aérea.")
     print("2- Encontrar clústeres de tráfico aéreo.")
     print("3- Encontrar la ruta más corta entre ciudades.")
@@ -45,18 +44,21 @@ def printMenu():
     print("5- Cuantificar el efecto de un aeropuerto cerrado.")
     print("6- Comparar con servicio WEB externo.")
 
-catalog = None
-
 """
 Menu principal
 """
+
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
-    if int(inputs[0]) == 1:
+    if str(inputs[0]).lower() == "a":
         print("Cargando información de los archivos ....")
+        cont = controller.initAnalyzer()
+        cont = controller.loadInfo(cont)
+        print(controller.totalAirperGraph(cont))
+        print(controller.totalConnectionsperGraph(cont))
 
-    elif int(inputs[0]) == 2:
+    elif int(inputs[0]) == 1:
         pass
 
     else:
