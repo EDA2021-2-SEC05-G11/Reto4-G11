@@ -112,9 +112,6 @@ def addrutes(analyzer, rutas):
         if edge_1 == None and edge_2 == None:
            gr.addEdge(analyzer['grafo'], origen, destino, distancia)
 
-        #else:
-         #   if Edge__['weight'] != distancia and (origen == Edge__['vertexA'] or origen == Edge__['vertexB'])  and (destino == Edge__['vertexA'] or destino == Edge__['vertexB']):
-          #      gr.addEdge(analyzer['grafo'], origen, destino, distancia)
     return analyzer
 
 def addcities(analyzer, ciudad):
@@ -122,13 +119,7 @@ def addcities(analyzer, ciudad):
     lt.addLast(analyzer["ciudades"], ciudad)
 
     return analyzer
-"""
-def creargrafonodirigido(analyzer):
 
-    for i in analyzer["rutas"]:
-
-        print(i)
-"""
 def comparestr(stop, keyvaluestop):
   
     stopcode = keyvaluestop['key']

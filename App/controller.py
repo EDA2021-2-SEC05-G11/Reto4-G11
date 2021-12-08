@@ -54,8 +54,6 @@ def loadInfo(analyzer):
     for city in city_file:
         model.addcities(analyzer, city)
 
-    #model.creargrafonodirigido(analyzer)
-
     return analyzer
 
 def totalAirperGraph(analyzer,tipo):
