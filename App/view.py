@@ -75,6 +75,13 @@ while True:
         iata2 = str(input("Ingrese el identificador (IATA) del segundo aeropuerto: ")).upper()
         print("\n")
         print(controller.req2(cont, iata1, iata2))
+    elif int(inputs[0]) == 3:
+        pass
+    elif int(inputs[0]) == 4:
+        pass
+    elif int(inputs[0]) == 5:
+        iata= str(input("Ingrese el identificador (IATA) del aeropuerto: ")).upper()
+        print(controller.req5(cont, iata))
     else:
         sys.exit(0)
 sys.exit(0)

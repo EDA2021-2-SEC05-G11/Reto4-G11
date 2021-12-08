@@ -169,7 +169,7 @@ def req1(analyzer):
     sa.sort(interconecciones, comparar_interconecciones)
     for i in interconecciones['elements']:
         print(i)
-
+#Req 2
 def req2(analyzer, iata1, iata2):
 
     dic_iata1=mp.get(analyzer["aeropuertos"], iata1)["value"]
@@ -202,3 +202,29 @@ def quitar_exedentes(dic):
     respuesta["Country"]=dic["Country"]
 
     return respuesta 
+
+#Req5
+
+def req5(analyzer, iata):
+
+    aeropuertos_afectados = lt.newList('ARRAY_LIST')
+    conecciones = gr.adjacents(analyzer['grafo'], iata)
+
+    for i in range(1, lt.size(conecciones)+1):
+        aeropuerto = lt.getElement(conecciones,i)
+        dic_aeropuerto = mp.get(analyzer['aeropuertos'], aeropuerto)["value"]
+        info_aeropuerto = quitar_exedentes(dic_aeropuerto)
+        lt.addLast(aeropuertos_afectados, info_aeropuerto)
+
+    print("Hay " + str(lt.size(aeropuertos_afectados))+ " aeropuertos afectados tras el cierre del aeropuerto " + iata)
+    
+    if lt.size(aeropuertos_afectados) > 6:
+     resultado=lt.subList(aeropuertos_afectados, 1, 3)
+     final=lt.subList(aeropuertos_afectados, - 3, 3)
+
+     for i in range(lt.size(final)+1):
+        lt.addLast(resultado, lt.getElement(final, i))
+    else:
+     resultado= aeropuertos_afectados
+    return resultado
+
