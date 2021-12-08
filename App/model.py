@@ -148,7 +148,7 @@ def carga_aeropuertos(analyzer):
 def comparar_interconecciones (a1,a2):
     return a1['Interconnections'] > a2['Interconnections']
 
-def r1(analyzer):
+def req1(analyzer):
     interconecciones = lt.newList(datastructure='ARRAY_LIST')
     vertices = gr.vertices(analyzer['digrafo'])
     for vertice in lt.iterator(vertices):
@@ -169,4 +169,36 @@ def r1(analyzer):
     sa.sort(interconecciones, comparar_interconecciones)
     for i in interconecciones['elements']:
         print(i)
-    
+
+def req2(analyzer, iata1, iata2):
+
+    dic_iata1=mp.get(analyzer["aeropuertos"], iata1)["value"]
+    dic_iata2=mp.get(analyzer["aeropuertos"], iata2)["value"]
+    print("Aeropuerto con codigo iata " + iata1)
+    print(quitar_exedentes(dic_iata1))
+    print("\n")
+    print("Aeropuerto con codigo iata " + iata2)
+    print(quitar_exedentes(dic_iata2))
+
+    componentes = scc.connectedComponents(scc.KosarajuSCC(analyzer['digrafo']))
+    comp_fuerte = scc.stronglyConnected(scc.KosarajuSCC(analyzer['digrafo']),iata1, iata2)
+    print("\nHay " + str(componentes) + " clústeres presentes en la red de transporte aéreo." )
+    if comp_fuerte == False:
+
+        respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " no estan en el mismo clúster\n")
+
+    if comp_fuerte == True:
+
+        respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " estan en el mismo clúster\n")
+
+    return respuesta 
+
+def quitar_exedentes(dic):
+
+    respuesta={}
+    respuesta["IATA"]=dic["IATA"]
+    respuesta["Name"]=dic["Name"]
+    respuesta["City"]=dic["City"]
+    respuesta["Country"]=dic["Country"]
+
+    return respuesta 

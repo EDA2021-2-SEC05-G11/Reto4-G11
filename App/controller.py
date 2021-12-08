@@ -66,5 +66,8 @@ def totalConnectionsperGraph(analyzer,tipo):
 def carga_aeropuertos(analyzer):
     return model.carga_aeropuertos(analyzer)
 
-def r1(analyzer):
-    return model.r1(analyzer)
+def req1(analyzer):
+    return model.req1(analyzer)
+
+def req2(analyzer, iata1, iata2):
+    return model.req2(analyzer, iata1, iata2)

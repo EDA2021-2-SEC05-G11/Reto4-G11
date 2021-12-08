@@ -68,8 +68,13 @@ while True:
         controller.carga_aeropuertos(cont)
         
     elif int(inputs[0]) == 1:
-        controller.r1(cont)
+        controller.req1(cont)
 
+    elif int(inputs[0]) == 2:
+        iata1 = str(input("Ingrese el identificador (IATA) del primer aeropuerto: ")).upper()
+        iata2 = str(input("Ingrese el identificador (IATA) del segundo aeropuerto: ")).upper()
+        print("\n")
+        print(controller.req2(cont, iata1, iata2))
     else:
         sys.exit(0)
 sys.exit(0)
