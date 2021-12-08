@@ -52,6 +52,8 @@ def newAnalyzer():
            vertice determinado a todos los otros vértices del grafo
     """
     analyzer = {}
+    analyzer['IATAS'] =  mp.newMap(numelements=14000,
+                                     maptype='PROBING')#,comparefunction=compareIATA)
 
     analyzer['aeropuertos'] = mp.newMap(numelements=181,
                                      maptype='PROBING',
@@ -73,16 +75,19 @@ def newAnalyzer():
                                               directed=False,
                                               size=182,
                                               comparefunction=comparestr)
-        
+    analyzer['Aero_departure'] = lt.newList(datastructure='ARRAY_LIST')
     return analyzer
 
 def addairport(analyzer, aeropuerto):
-
     iata = aeropuerto["IATA"]
+    map_iata = analyzer['IATAS']
+    mp.put(map_iata, iata, aeropuerto)
+    lt.addLast(analyzer['Aero_departure'], iata)
     mp.put(analyzer["aeropuertos"], iata, aeropuerto)
 
     if not gr.containsVertex(analyzer['digrafo'], iata):
         gr.insertVertex(analyzer['digrafo'], iata)
+    gr.insertVertex(analyzer['grafo'], iata)
     return analyzer
 
 def addrutes(analyzer, rutas):
@@ -90,8 +95,19 @@ def addrutes(analyzer, rutas):
     origen = rutas["Departure"]
     destino = rutas["Destination"]
     distancia = float(rutas["distance_km"])
-
     gr.addEdge(analyzer["digrafo"],origen,destino,distancia)  
+
+    Edge_ = gr.getEdge(analyzer['digrafo'], destino, origen)    
+    if Edge_ != None:       
+        #Comprobar si existe un arco de vuelta, osea saber si existe un camino
+        Edge__ = gr.getEdge(analyzer['grafo'], destino, origen)      
+        if Edge__ == None:
+            gr.addEdge(analyzer['grafo'], origen, destino, distancia)
+        else:
+            if Edge__['weight'] != distancia and (origen == Edge__['vertexA'] or origen == Edge__['vertexB'])  and (destino == Edge__['vertexA'] or destino == Edge__['vertexB']):
+                gr.addEdge(analyzer['grafo'], origen, destino, distancia)
+
+
 
     return analyzer
 
@@ -121,17 +137,22 @@ def totalAirperGraph(analyzer):
     """
     Retorna el total de aeropuertos (vertices) de los grafos
     """
-    return gr.numVertices(analyzer['digrafo'])
+    return gr.numVertices(analyzer['grafo'])
 
 def totalConnectionsperGraph(analyzer):
     """
     Retorna el total arcos de los grafos
     """
     
-    return gr.numEdges(analyzer['digrafo'])
+    return gr.numEdges(analyzer['grafo'])
 
-
-
+def p1(analyzer):
+    A = lt.firstElement(analyzer['Aero_departure'])
+    B = lt.lastElement(analyzer['Aero_departure'])
+    datos1 = mp.get(analyzer["IATAS"], A)["value"]
+    datos2 = mp.get(analyzer["IATAS"], B)["value"]
+    print(datos1)
+    print(datos2)
 # Construccion de modelos
 
 # Funciones para agregar informacion al catalogo

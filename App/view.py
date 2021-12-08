@@ -57,7 +57,7 @@ while True:
         cont = controller.loadInfo(cont)
         print(controller.totalAirperGraph(cont))
         print(controller.totalConnectionsperGraph(cont))
-
+        print(controller.p1(cont))
     elif int(inputs[0]) == 1:
         pass
 
