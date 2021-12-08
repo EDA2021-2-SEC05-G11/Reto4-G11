@@ -69,12 +69,8 @@ def totalConnectionsperGraph(analyzer,tipo):
     Total de enlaces entre las paradas
     """
     return model.totalConnectionsperGraph(analyzer,tipo)
-def p1(analyzer):
-    return model.p1(analyzer)
-# Inicialización del Catálogo de libros
+def carga_aeropuertos(analyzer):
+    return model.carga_aeropuertos(analyzer)
 
-# Funciones para la carga de datos
-
-# Funciones de ordenamiento
-
-# Funciones de consulta sobre el catálogo
+def r1(analyzer):
+    return model.r1(analyzer)

@@ -28,6 +28,7 @@
 import config 
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.ADT.graph import gr
@@ -149,21 +150,37 @@ def totalConnectionsperGraph(analyzer,tipo):
     
     return gr.numEdges(analyzer[tipo])
 
-def p1(analyzer):
+def carga_aeropuertos(analyzer):
     A = lt.firstElement(analyzer['Aero_departure'])
     B = lt.lastElement(analyzer['Aero_departure'])
     datos1 = mp.get(analyzer["IATAS"], A)["value"]
     datos2 = mp.get(analyzer["IATAS"], B)["value"]
     print(datos1)
-    print(datos2)
-# Construccion de modelos
+    print(datos2) 
 
-# Funciones para agregar informacion al catalogo
+#Req 1
+def comparar_interconecciones (a1,a2):
+    return a1['Interconnections'] > a2['Interconnections']
 
-# Funciones para creacion de datos
-
-# Funciones de consulta
-
-# Funciones utilizadas para comparar elementos dentro de una lista
-
-# Funciones de ordenamiento
+def r1(analyzer):
+    interconecciones = lt.newList(datastructure='ARRAY_LIST')
+    vertices = gr.vertices(analyzer['digrafo'])
+    for vertice in lt.iterator(vertices):
+        entrada = gr.indegree(analyzer['digrafo'], vertice)
+        salida = gr.outdegree(analyzer['digrafo'], vertice)
+        conecciones_totales = entrada + salida
+        if conecciones_totales == 0:
+            continue
+        aeropuerto=mp.get(analyzer['IATAS'], vertice)['value']
+        info={'Airport':vertice,
+              'Interconnections': conecciones_totales,
+              'Name':aeropuerto['Name'],
+              'City':aeropuerto['City'],
+              'Country': aeropuerto['Country'],
+              'Inbound': entrada,
+              'Outbound': salida}
+        lt.addLast(interconecciones,info)
+    sa.sort(interconecciones, comparar_interconecciones)
+    for i in interconecciones['elements']:
+        print(i)
+    
