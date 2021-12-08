@@ -57,15 +57,11 @@ def loadInfo(analyzer):
     return analyzer
 
 def totalAirperGraph(analyzer,tipo):
-    """
-    Total de paradas de autobus
-    """
+
     return model.totalAirperGraph(analyzer,tipo)
 
 def totalConnectionsperGraph(analyzer,tipo):
-    """
-    Total de enlaces entre las paradas
-    """
+
     return model.totalConnectionsperGraph(analyzer,tipo)
 def carga_aeropuertos(analyzer):
     return model.carga_aeropuertos(analyzer)

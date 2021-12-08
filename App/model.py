@@ -44,14 +44,6 @@ los mismos.
 
 def newAnalyzer():
 
-    """ Inicializa el analizador
-
-   stops: Tabla de hash para guardar los vertices del grafo
-   connections: Grafo para representar las rutas entre estaciones
-   components: Almacena la informacion de los componentes conectados
-   paths: Estructura que almancena los caminos de costo minimo desde un
-           vertice determinado a todos los otros vértices del grafo
-    """
     analyzer = {}
     analyzer['IATAS'] =  mp.newMap(numelements=14000,
                                      maptype='PROBING')#,comparefunction=compareIATA)
@@ -103,10 +95,11 @@ def addrutes(analyzer, rutas):
 
         gr.addEdge(analyzer["digrafo"],origen,destino,distancia)  
 
-    edge_1 = gr.getEdge(analyzer['grafo'], destino, origen)   
+    edge_ = gr.getEdge(analyzer['digrafo'], destino, origen)   
 
-    if edge_1 != None:       
+    if edge_ != None:       
         #Comprobar si existe un arco de vuelta, osea saber si existe un camino  
+        edge_1 = gr.getEdge(analyzer['grafo'], destino, origen)   
         edge_2 = gr.getEdge(analyzer["grafo"],origen,destino )
 
         if edge_1 == None and edge_2 == None:
