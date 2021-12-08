@@ -55,8 +55,13 @@ while True:
         print("Cargando información de los archivos ....")
         cont = controller.initAnalyzer()
         cont = controller.loadInfo(cont)
-        print(controller.totalAirperGraph(cont))
-        print(controller.totalConnectionsperGraph(cont))
+        print("Rutas del aeropuerto digrafo")
+        print("Vertices: "+str(controller.totalAirperGraph(cont,"digrafo")))
+        print("Arcos "+ str(controller.totalConnectionsperGraph(cont,"digrafo")))
+        print("Rutas del aeropuerto grafo")
+        print("Vertices: " +str(controller.totalAirperGraph(cont,"grafo")))
+        print("Arcos: "+str(controller.totalConnectionsperGraph(cont,"grafo")))
+
         print(controller.p1(cont))
     elif int(inputs[0]) == 1:
         pass

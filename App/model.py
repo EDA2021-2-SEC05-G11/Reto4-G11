@@ -96,19 +96,22 @@ def addrutes(analyzer, rutas):
     destino = rutas["Destination"]
     distancia = float(rutas["distance_km"])
     gr.addEdge(analyzer["digrafo"],origen,destino,distancia)  
-
     Edge_ = gr.getEdge(analyzer['digrafo'], destino, origen)    
+
     if Edge_ != None:       
-        #Comprobar si existe un arco de vuelta, osea saber si existe un camino
-        Edge__ = gr.getEdge(analyzer['grafo'], destino, origen)      
-        if Edge__ == None:
+        #Comprobar si existe un arco de vuelta, osea saber si existe un camino 
+        Edge_1 = gr.getEdge(analyzer['grafo'], destino, origen)  
+        Edge_2= gr.getEdge(analyzer["grafo"],origen,destino )
+
+        if Edge_1 == None:
+           gr.addEdge(analyzer['grafo'], destino, origen, distancia)
+
+        if Edge_2 == None:
             gr.addEdge(analyzer['grafo'], origen, destino, distancia)
-        else:
-            if Edge__['weight'] != distancia and (origen == Edge__['vertexA'] or origen == Edge__['vertexB'])  and (destino == Edge__['vertexA'] or destino == Edge__['vertexB']):
-                gr.addEdge(analyzer['grafo'], origen, destino, distancia)
 
-
-
+        #else:
+         #   if Edge__['weight'] != distancia and (origen == Edge__['vertexA'] or origen == Edge__['vertexB'])  and (destino == Edge__['vertexA'] or destino == Edge__['vertexB']):
+          #      gr.addEdge(analyzer['grafo'], origen, destino, distancia)
     return analyzer
 
 def addcities(analyzer, ciudad):
@@ -133,18 +136,18 @@ def comparestr(stop, keyvaluestop):
     else:
         return -1
 
-def totalAirperGraph(analyzer):
+def totalAirperGraph(analyzer,tipo):
     """
     Retorna el total de aeropuertos (vertices) de los grafos
     """
-    return gr.numVertices(analyzer['grafo'])
+    return gr.numVertices(analyzer[tipo])
 
-def totalConnectionsperGraph(analyzer):
+def totalConnectionsperGraph(analyzer,tipo):
     """
     Retorna el total arcos de los grafos
     """
     
-    return gr.numEdges(analyzer['grafo'])
+    return gr.numEdges(analyzer[tipo])
 
 def p1(analyzer):
     A = lt.firstElement(analyzer['Aero_departure'])

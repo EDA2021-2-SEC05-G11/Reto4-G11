@@ -58,17 +58,17 @@ def loadInfo(analyzer):
 
     return analyzer
 
-def totalAirperGraph(analyzer):
+def totalAirperGraph(analyzer,tipo):
     """
     Total de paradas de autobus
     """
-    return model.totalAirperGraph(analyzer)
+    return model.totalAirperGraph(analyzer,tipo)
 
-def totalConnectionsperGraph(analyzer):
+def totalConnectionsperGraph(analyzer,tipo):
     """
     Total de enlaces entre las paradas
     """
-    return model.totalConnectionsperGraph(analyzer)
+    return model.totalConnectionsperGraph(analyzer,tipo)
 def p1(analyzer):
     return model.p1(analyzer)
 # Inicialización del Catálogo de libros
