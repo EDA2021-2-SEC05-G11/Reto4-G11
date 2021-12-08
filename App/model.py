@@ -95,19 +95,21 @@ def addrutes(analyzer, rutas):
     origen = rutas["Departure"]
     destino = rutas["Destination"]
     distancia = float(rutas["distance_km"])
-    gr.addEdge(analyzer["digrafo"],origen,destino,distancia)  
-    Edge_ = gr.getEdge(analyzer['digrafo'], destino, origen)    
 
-    if Edge_ != None:       
-        #Comprobar si existe un arco de vuelta, osea saber si existe un camino 
-        Edge_1 = gr.getEdge(analyzer['grafo'], destino, origen)  
-        Edge_2= gr.getEdge(analyzer["grafo"],origen,destino )
+    edge = gr.getEdge(analyzer['digrafo'], origen, destino)   
 
-        if Edge_1 == None:
-           gr.addEdge(analyzer['grafo'], destino, origen, distancia)
+    if edge == None:
 
-        if Edge_2 == None:
-            gr.addEdge(analyzer['grafo'], origen, destino, distancia)
+        gr.addEdge(analyzer["digrafo"],origen,destino,distancia)  
+
+    edge_1 = gr.getEdge(analyzer['grafo'], destino, origen)   
+
+    if edge_1 != None:       
+        #Comprobar si existe un arco de vuelta, osea saber si existe un camino  
+        edge_2 = gr.getEdge(analyzer["grafo"],origen,destino )
+
+        if edge_1 == None and edge_2 == None:
+           gr.addEdge(analyzer['grafo'], origen, destino, distancia)
 
         #else:
          #   if Edge__['weight'] != distancia and (origen == Edge__['vertexA'] or origen == Edge__['vertexB'])  and (destino == Edge__['vertexA'] or destino == Edge__['vertexB']):
