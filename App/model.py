@@ -216,7 +216,7 @@ def quitar_exedentes(dic):
 def req4(analyzer, origen, millas):
     
     mst = prim.PrimMST(analyzer['grafo'])
-    millas = millas * 1.60
+    km = millas * 1.60
     nuevo_grafo = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=False,
                                               size=1000,
@@ -241,7 +241,7 @@ def req4(analyzer, origen, millas):
 
     print("Hay " + str(gr.numVertices(nuevo_grafo)) + " posibles aeropuertos")
     print("La distancia entre los aeropuertos es de " + str(round(prim.weightMST(analyzer["grafo"],mst),2)) + " Km")
-    print("La cantidad de millas de viaje disponibles del usuario es de " + str(round(millas,2)) + " km\n")
+    print("La cantidad de millas de viaje disponibles del usuario es de " + str(round(km,2)) + " km\n")
 
     suma = 0
     edge = None
@@ -260,7 +260,15 @@ def req4(analyzer, origen, millas):
              lista_final.append(dic_final)
     print("El camino mas largo posible es de " + str(round(suma,2)) + " km")    
     print("Los detalles del camino mas largo son: \n")   
-    return lista_final
+    print(lista_final)
+    milla_suma= round(suma,2)/1.60
+    necesidad = round((millas - (round(milla_suma,2)*2)),2)
+
+    if necesidad > 0:
+        result = "\nAl usuario le sobran " + str(necesidad) + " millas"
+    else:
+        result = "\nAl usuario le faltan " + str(abs(necesidad)) + " millas"
+    return result 
 
 
 #Req5
