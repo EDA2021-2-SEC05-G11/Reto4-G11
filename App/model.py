@@ -41,12 +41,13 @@ from DISClib.Utils import error as error
 #import haversine
 #from haversine import haversine, inverse_haversine, Direction
 assert config
+import sys
 
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
 """
-
+sys.setrecursionlimit(120000)
 def newAnalyzer():
 
     analyzer = {}
@@ -181,7 +182,6 @@ def comparar_interconecciones (a1,a2):
     return a1['Interconnections'] > a2['Interconnections']
 
 def req1(analyzer):
-    print(analyzer["rutas"])
     interconecciones = lt.newList(datastructure='ARRAY_LIST')
     vertices = gr.vertices(analyzer['digrafo'])
     for vertice in lt.iterator(vertices):
