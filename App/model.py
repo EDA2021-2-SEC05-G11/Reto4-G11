@@ -34,7 +34,10 @@ from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
+from DISClib.Algorithms.Graphs.dijsktra import Dijkstra, pathTo, distTo
 from DISClib.Utils import error as error
+import haversine
+from haversine import haversine, inverse_haversine, Direction
 assert config
 
 """
@@ -69,6 +72,10 @@ def newAnalyzer():
                                               size=182,
                                               comparefunction=comparestr)
     analyzer['Aero_departure'] = lt.newList(datastructure='ARRAY_LIST')
+    analyzer['Ciudad'] =mp.newMap(10500,
+                                  maptype='CHAINING',
+                                  loadfactor=4)
+    analyzer['latitude'] = om.newMap(omaptype="RBT")
     return analyzer
 
 def addairport(analyzer, aeropuerto):
@@ -81,6 +88,16 @@ def addairport(analyzer, aeropuerto):
     if not gr.containsVertex(analyzer['digrafo'], iata):
         gr.insertVertex(analyzer['digrafo'], iata)
     gr.insertVertex(analyzer['grafo'], iata)
+
+    lat = round(float(aeropuerto["Latitude"]), 3)
+    
+    keyval = om.get(analyzer["latitude"], lat)
+
+    if keyval is None:
+        airports = lt.newList()
+        om.put(analyzer["latitude"], lat, airports)
+    else:
+        airports = me.getValue(keyval)
     return analyzer
 
 def addrutes(analyzer, rutas):
@@ -108,9 +125,15 @@ def addrutes(analyzer, rutas):
     return analyzer
 
 def addcities(analyzer, ciudad):
-
+    ciudades=analyzer['Ciudad']
+    nombres_ciu=ciudad['city_ascii']
+    existe = mp.contains(ciudades,nombres_ciu)
     lt.addLast(analyzer["ciudades"], ciudad)
-
+    if existe:
+        ciudad=me.getValue(mp.get(ciudades,nombres_ciu))
+    else:
+        
+        mp.put(ciudades,nombres_ciu,ciudad)
     return analyzer
 
 def comparestr(stop, keyvaluestop):
@@ -183,11 +206,12 @@ def req2(analyzer, iata1, iata2):
     componentes = scc.connectedComponents(scc.KosarajuSCC(analyzer['digrafo']))
     comp_fuerte = scc.stronglyConnected(scc.KosarajuSCC(analyzer['digrafo']),iata1, iata2)
     print("\nHay " + str(componentes) + " clústeres presentes en la red de transporte aéreo." )
+    print()
     if comp_fuerte == False:
 
         respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " no estan en el mismo clúster\n")
 
-    if comp_fuerte == True:
+    elif comp_fuerte == True:
 
         respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " estan en el mismo clúster\n")
 
@@ -202,6 +226,45 @@ def quitar_exedentes(dic):
     respuesta["Country"]=dic["Country"]
 
     return respuesta 
+#Req 3
+def Req3_(analyzer,city):
+    
+    Coordenadas_= (float(city['lat']), float(city['lng']))
+    
+    Latitud= analyzer['latitude']
+    Distancia_Km=10
+    
+    Lista_ = lt.newList(datastructure='ARRAY_LIST')
+
+    while lt.size(Lista_) == 0:
+        Norte = haversine.inverse_haversine(Coordenadas_,  Distancia_Km,Direction.NORTH)
+        Sur = haversine.inverse_haversine(Coordenadas_,  Distancia_Km,Direction.SOUTH)
+        Oeste = haversine.inverse_haversine(Coordenadas_,  Distancia_Km,Direction.WEST)
+        Este = haversine.inverse_haversine(Coordenadas_,  Distancia_Km,Direction.EAST)
+        
+        latitud_aero = om.values(Latitud, Sur[0], Norte[0])
+        for list in lt.iterator(latitud_aero):
+            for airport in lt.iterator(list):
+                if float(airport['Longitude']) > Oeste[1] and float(airport['Longitude']) < Este[1]:
+                    lt.addLast(Lista_,airport)
+        Distancia_Km+=10
+
+    if lt.size(Lista_)!=1:
+        for i in lt.iterator(Lista_):
+            Coordenadas_aero = (float(i['Latitude']), float(i['Longitude']))
+            distancia = haversine.haversine(Coordenadas_,Coordenadas_aero)
+            if distancia < Distancia_Km:
+                aero = i
+                Distancia_Km = distancia
+    else:
+        aero = lt.firstElement(Lista_)
+    return aero, Distancia_Km
+
+def req3(catalog, city1, city2):
+    aero__1, distancia__1 = Req3_(catalog, city1)
+    aero__2, distancia__2 = Req3_(catalog, city2)
+    dijsktra = Dijkstra(catalog['dir_connections'], aero__1["IATA"])
+    return pathTo(dijsktra, aero__1["IATA"]), distancia__1, distTo(dijsktra, aero__2['IATA']), distancia__2
 
 #Req5
 
@@ -226,5 +289,7 @@ def req5(analyzer, iata):
         lt.addLast(resultado, lt.getElement(final, i))
     else:
      resultado= aeropuertos_afectados
-    return resultado
+    #return resultado
+    print(mp.keySet(analyzer['Ciudad']))
+  
 

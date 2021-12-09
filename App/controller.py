@@ -71,5 +71,9 @@ def req1(analyzer):
 
 def req2(analyzer, iata1, iata2):
     return model.req2(analyzer, iata1, iata2)
+
+def req3(analyzer, city1, city2):
+    return model.req3(analyzer, city1, city2)
+    
 def req5(analyzer, iata):
     return model.req5(analyzer,iata)
