@@ -24,6 +24,7 @@ import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -80,7 +81,14 @@ while True:
         print("\n")
         print(controller.req2(cont, iata1, iata2))
     elif int(inputs[0]) == 3:
-        pass
+
+        Ciudad_salida=input('Ciudad de salida: ')
+        Ciudad_destino=input('Ciudad de llegada: ')
+        salida_=mp.get(cont['Ciudad'],Ciudad_salida)['value']
+        destino_=mp.get(cont['Ciudad'],Ciudad_destino)['value']
+        controller.req3(cont,salida_,destino_)
+            
+        
     elif int(inputs[0]) == 4:
         ciudad = str(input("Ingrese el identificador (IATA) del aeropuerto: ")).upper()
         millas = float(input("Ingrese la cantidad de millas disponibles: "))
