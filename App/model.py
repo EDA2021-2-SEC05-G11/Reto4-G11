@@ -35,14 +35,11 @@ from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dfs
 from DISClib.Algorithms.Graphs import dijsktra as djk
-<<<<<<< HEAD
 from DISClib.Algorithms.Graphs.dijsktra import Dijkstra, pathTo, distTo
-=======
 from DISClib.Algorithms.Graphs import prim
->>>>>>> 98759d112a6f4aada5673b74bd2e72bf0c071ef2
 from DISClib.Utils import error as error
-import haversine
-from haversine import haversine, inverse_haversine, Direction
+#import haversine
+#from haversine import haversine, inverse_haversine, Direction
 assert config
 
 """
@@ -184,6 +181,7 @@ def comparar_interconecciones (a1,a2):
     return a1['Interconnections'] > a2['Interconnections']
 
 def req1(analyzer):
+    print(analyzer["rutas"])
     interconecciones = lt.newList(datastructure='ARRAY_LIST')
     vertices = gr.vertices(analyzer['digrafo'])
     for vertice in lt.iterator(vertices):
@@ -218,14 +216,14 @@ def req2(analyzer, iata1, iata2):
     componentes = scc.connectedComponents(scc.KosarajuSCC(analyzer['digrafo']))
     comp_fuerte = scc.stronglyConnected(scc.KosarajuSCC(analyzer['digrafo']),iata1, iata2)
     print("\nHay " + str(componentes) + " clústeres presentes en la red de transporte aéreo." )
-    print()
+
     if comp_fuerte == False:
 
-        respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " no estan en el mismo clúster\n")
+        respuesta = ("\nLos aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " no estan en el mismo clúster\n")
 
     elif comp_fuerte == True:
 
-        respuesta = ("Los aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " estan en el mismo clúster\n")
+        respuesta = ("\nLos aeropuertos identificados con el iata " + iata1 + " y " + iata2 + " estan en el mismo clúster\n")
 
     return respuesta 
 
@@ -360,7 +358,6 @@ def req5(analyzer, iata):
         lt.addLast(resultado, lt.getElement(final, i))
     else:
      resultado= aeropuertos_afectados
-    #return resultado
-    print(mp.keySet(analyzer['Ciudad']))
+    return resultado
   
 
