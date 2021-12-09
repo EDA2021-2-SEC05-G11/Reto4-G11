@@ -63,8 +63,12 @@ def totalAirperGraph(analyzer,tipo):
 def totalConnectionsperGraph(analyzer,tipo):
 
     return model.totalConnectionsperGraph(analyzer,tipo)
+def total_ciudades(analyzer):
+    return model.total_ciudades(analyzer)
 def carga_aeropuertos(analyzer):
     return model.carga_aeropuertos(analyzer)
+def carga_ciudades(analyzer,cantidad):
+    return model.carga_ciudades(analyzer,cantidad)
 
 def req1(analyzer):
     return model.req1(analyzer)
@@ -75,5 +79,8 @@ def req2(analyzer, iata1, iata2):
 def req3(analyzer, city1, city2):
     return model.req3(analyzer, city1, city2)
     
+def req4(analyzer, ciudad, millas):
+    return model.req4(analyzer,ciudad, millas)
+
 def req5(analyzer, iata):
     return model.req5(analyzer,iata)

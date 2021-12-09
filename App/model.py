@@ -33,8 +33,13 @@ from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.ADT.graph import gr
 from DISClib.Algorithms.Graphs import scc
+from DISClib.Algorithms.Graphs import dfs
 from DISClib.Algorithms.Graphs import dijsktra as djk
+<<<<<<< HEAD
 from DISClib.Algorithms.Graphs.dijsktra import Dijkstra, pathTo, distTo
+=======
+from DISClib.Algorithms.Graphs import prim
+>>>>>>> 98759d112a6f4aada5673b74bd2e72bf0c071ef2
 from DISClib.Utils import error as error
 import haversine
 from haversine import haversine, inverse_haversine, Direction
@@ -167,6 +172,13 @@ def carga_aeropuertos(analyzer):
     print(datos1)
     print(datos2) 
 
+def total_ciudades(analyzer):
+    return (lt.size(analyzer["ciudades"]))
+
+def carga_ciudades(analyzer,cantidad):
+    print(lt.getElement(analyzer["ciudades"],1))
+    print(lt.getElement(analyzer["ciudades"],cantidad))
+
 #Req 1
 def comparar_interconecciones (a1,a2):
     return a1['Interconnections'] > a2['Interconnections']
@@ -265,6 +277,57 @@ def req3(catalog, city1, city2):
     aero__2, distancia__2 = Req3_(catalog, city2)
     dijsktra = Dijkstra(catalog['dir_connections'], aero__1["IATA"])
     return pathTo(dijsktra, aero__1["IATA"]), distancia__1, distTo(dijsktra, aero__2['IATA']), distancia__2
+#Req4
+
+def req4(analyzer, origen, millas):
+    
+    mst = prim.PrimMST(analyzer['grafo'])
+    millas = millas * 1.60
+    nuevo_grafo = gr.newGraph(datastructure='ADJ_LIST',
+                                              directed=False,
+                                              size=1000,
+                                              comparefunction=comparestr)
+    primmst=(prim.prim(analyzer["grafo"], mst,origen))
+
+
+    for i in lt.iterator(primmst['edgeTo']['table']):
+    
+        if i['key'] != None:
+            
+            origen = i['value']['vertexA']
+            destino = i['value']['vertexB']
+            distancia = i['value']['weight']
+
+            if not gr.containsVertex(nuevo_grafo, origen):
+                gr.insertVertex(nuevo_grafo, origen)
+            if not gr.containsVertex(nuevo_grafo, destino):
+                gr.insertVertex(nuevo_grafo, destino)
+            if gr.getEdge(nuevo_grafo, origen, destino) == None:
+                gr.addEdge(nuevo_grafo, origen, destino, distancia)
+
+    print("Hay " + str(gr.numVertices(nuevo_grafo)) + " posibles aeropuertos")
+    print("La distancia entre los aeropuertos es de " + str(round(prim.weightMST(analyzer["grafo"],mst),2)) + " Km")
+    print("La cantidad de millas de viaje disponibles del usuario es de " + str(round(millas,2)) + " km\n")
+
+    suma = 0
+    edge = None
+    dic_final = {}
+    lista_final = []
+    df = dfs.DepthFirstSearch(analyzer["grafo"], origen)
+    for i in lt.iterator(df['visited']['table']):
+        if i['key'] != None:
+          dic_final = {} 
+          if  i["value"]["edgeTo"] != None:
+             edge=gr.getEdge(analyzer["grafo"], i["key"], i["value"]["edgeTo"])
+             dic_final["Departure"]= edge["vertexA"]
+             dic_final["Destination"] = edge["vertexB"]
+             dic_final["distance km"] = edge["weight"]
+             suma += edge["weight"]
+             lista_final.append(dic_final)
+    print("El camino mas largo posible es de " + str(round(suma,2)) + " km")    
+    print("Los detalles del camino mas largo son: \n")   
+    return lista_final
+
 
 #Req5
 

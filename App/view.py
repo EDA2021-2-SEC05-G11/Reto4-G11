@@ -36,7 +36,7 @@ operación solicitada
 """
 
 def printMenu():
-    print("Bienvenido")
+    print("\nBienvenido")
     print("A- Cargar información en el catálogo")
     print("1- Encontrar puntos de interconexión aérea.")
     print("2- Encontrar clústeres de tráfico aéreo.")
@@ -61,12 +61,16 @@ while True:
         print("Arcos "+ str(controller.totalConnectionsperGraph(cont,"digrafo"))+" rutas cargadas. ")
         print("El primero y ultimo aeropuerto cargado en el Digrafo son: ")
         controller.carga_aeropuertos(cont)
-        print()
-        print("==== Rutas del aeropuerto grafo ====")
+        print("\n==== Rutas del aeropuerto grafo ====")
         print("Vertices: " +str(controller.totalAirperGraph(cont,"grafo"))+" aeropuertos cargados. ")
         print("Arcos: "+str(controller.totalConnectionsperGraph(cont,"grafo"))+" rutas cargadas. ")
         print("El primero y ultimo aeropuerto cargado en el grafo son: ")
         controller.carga_aeropuertos(cont)
+        print("\n==== Ciudades ====")
+        cantidad=controller.total_ciudades(cont)
+        print("El numero de ciudades es de " + str(cantidad))
+        print("La primera y ultima ciudad carga son: ")
+        controller.carga_ciudades(cont,cantidad)
         
     elif int(inputs[0]) == 1:
         controller.req1(cont)
@@ -86,7 +90,9 @@ while True:
             
         
     elif int(inputs[0]) == 4:
-        pass
+        ciudad = str(input("Ingrese el identificador (IATA) del aeropuerto: ")).upper()
+        millas = float(input("Ingrese la cantidad de millas disponibles: "))
+        print(controller.req4(cont, ciudad, millas))
     elif int(inputs[0]) == 5:
         iata= str(input("Ingrese el identificador (IATA) del aeropuerto: ")).upper()
         print(controller.req5(cont, iata))
